@@ -11,7 +11,20 @@ module.exports = {
 					creep.moveTo(target, {maxRooms: 1});
 				}
 			} else {
-				creep.moveTo(Game.rooms[creep.memory.home].controller);
+				road = creep.pos.findInRange(FIND_STRUCTURES, 0 , {filter: { structureType: STRUCTURE_ROAD }});
+				if (road.length) {
+					if (road[0].hits < road.hitsMax - 1000) {
+						creep.repair(road[0]);
+					}
+					creep.moveTo(Game.rooms[creep.memory.home].controller, { ignoreCreeps: true });
+				} else {
+					construction = creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 0);
+					if (construction.length) {
+						creep.build(construction[0]);
+					} else {
+						creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD);
+					}
+				}
 			}
 		} else { // else if empty go to target room
 			if (creep.room.name == creep.memory.targetRoom) {
