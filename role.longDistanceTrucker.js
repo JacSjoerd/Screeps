@@ -16,7 +16,7 @@ module.exports = {
 					if (road[0].hits < road.hitsMax - 1000) {
 						creep.repair(road[0]);
 					}
-					creep.moveTo(Game.rooms[creep.memory.home].controller, { ignoreCreeps: true });
+					creep.moveTo(Game.rooms[creep.memory.home].controller, { ignoreCreeps: true, swampCost: 1 });
 				} else {
 					construction = creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 0);
 					if (construction.length) {
