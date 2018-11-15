@@ -71,10 +71,11 @@ module.exports = function() {
 				}
 			}
 			if (role == 'longDistanceTrucker') {
-				var numberOfParts = Math.floor(energy / 200);
-				numberOfParts = numberOfParts > 10 ? 10 : numberOfParts;
-				var body = [];
-				for (let i = 0; i < numberOfParts; i++) {
+				var numberOfParts = Math.floor(energy / 400);
+				numberOfParts = numberOfParts > 5 ? 5 : numberOfParts;
+				var body = [WORK, CARRY, MOVE];
+				for (let i = 1; i < numberOfParts; i++) {
+					body.push(CARRY);
 					body.push(CARRY);
 					body.push(MOVE);
 				}
