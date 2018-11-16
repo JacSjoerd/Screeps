@@ -47,7 +47,7 @@ module.exports.loop = function () {
 			// get creeps that are not alive from this room
 			let creepList = groupedCreepsToBuild[roomName] || [];
             if (creepList.length > 0) {
-                new RoomVisual(room.name).text('Build queue:' + creepList.length,3,1);
+                new RoomVisual(room.name).text(' Build queue:' + creepList.length, 3, 1, { align: 'left' });
             }
 
 			// get priority roles from this room

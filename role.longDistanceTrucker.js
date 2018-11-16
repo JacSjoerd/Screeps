@@ -11,14 +11,15 @@ module.exports = {
 					creep.moveTo(target, {maxRooms: 1});
 				}
 			} else {
-				road = creep.pos.findInRange(FIND_STRUCTURES, 0 , {filter: { structureType: STRUCTURE_ROAD }});
-				if (road.length) {
-					if (road[0].hits < road.hitsMax - 1000) {
+				road = creep.pos.lookFor(LOOK_STRUCTURES);
+				if (road.length && road[0].structureType === STRUCTURE_ROAD) {
+    				new RoomVisual(creep.room.name).text(road[0].hits, creep.pos.x, creep.pos.y - 1);
+					if (road[0].hits < road[0].hitsMax - 1000) {
 						creep.repair(road[0]);
 					}
-					creep.moveTo(Game.rooms[creep.memory.home].controller, { ignoreCreeps: true, swampCost: 2 });
+					creep.moveTo(Game.rooms[creep.memory.home].controller, { swampCost: 2 });
 				} else {
-					construction = creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 0);
+					construction = creep.pos.lookFor(LOOK_CONSTRUCTION_SITES);
 					if (construction.length) {
 						creep.build(construction[0]);
 					} else {
@@ -27,34 +28,37 @@ module.exports = {
 				}
 			}
 		} else { // else if empty go to target room
-			if (creep.room.name == creep.memory.targetRoom) {
-				// find energy drops
-				energy = creep.pos.findInRange(FIND_DROPPED_RESOURCES, 1, {
-					filter: e => e.resourceType == RESOURCE_ENERGY
-				});
-				if (energy.length > 0) {
-					if (creep.pickup(energy[0]) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(energy[0]);
-					}
-				} else {
-					// if no loose energy, go to target
-					if (creep.memory.target != undefined) {
-						target = Game.getObjectById(creep.memory.target);
-						if (!creep.pos.inRangeTo(target, 2)) {
-							creep.moveTo(target, {maxRooms: 1});
-						}
-					}
-				}
 
-			} else {
-				let target = Game.getObjectById(creep.memory.target);
-				if (target == null) {
-				    targetRoom = new RoomPosition(24, 24, creep.memory.targetRoom);
-					creep.moveTo(targetRoom, {range: 20});
-				} else {
-					creep.moveTo(Game.getObjectById(creep.memory.target));
-				}
-			}
+    		energy = creep.pos.findInRange(FIND_DROPPED_RESOURCES, 1, {
+    			filter: e => e.resourceType == RESOURCE_ENERGY
+    		});
+    		if (energy.length > 0) {
+    			creep.pickup(energy[0]);
+    		}
+
+    		if (creep.room.name == creep.memory.targetRoom) {
+    			if (creep.memory.target != undefined) {
+    				target = Game.getObjectById(creep.memory.target);
+    				if (!creep.pos.inRangeTo(target, 2)) {
+    					creep.moveTo(target, {maxRooms: 1});
+    				} else {
+    				    energy = creep.pos.findInRange(FIND_DROPPED_RESOURCES, 3, {
+    			            filter: e => e.resourceType == RESOURCE_ENERGY
+    				    });
+    				    if (energy.length) {
+    				        creep.moveTo(energy[0]);
+    				    }
+    				}
+    			}
+    		} else {
+    			let target = Game.getObjectById(creep.memory.target);
+    			if (target == null) {
+    			    targetRoom = new RoomPosition(24, 24, creep.memory.targetRoom);
+    				creep.moveTo(targetRoom, {range: 20});
+    			} else {
+    				creep.moveTo(Game.getObjectById(creep.memory.target));
+    			}
+    		}
 		}
 	}
 
