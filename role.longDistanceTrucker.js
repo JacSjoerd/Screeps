@@ -16,7 +16,7 @@ module.exports = {
 					if (road[0].hits < road.hitsMax - 1000) {
 						creep.repair(road[0]);
 					}
-					creep.moveTo(Game.rooms[creep.memory.home].controller, { ignoreCreeps: true, swampCost: 1 });
+					creep.moveTo(Game.rooms[creep.memory.home].controller, { ignoreCreeps: true, swampCost: 2 });
 				} else {
 					construction = creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 0);
 					if (construction.length) {
@@ -29,7 +29,7 @@ module.exports = {
 		} else { // else if empty go to target room
 			if (creep.room.name == creep.memory.targetRoom) {
 				// find energy drops
-				energy = creep.room.find(FIND_DROPPED_RESOURCES, {
+				energy = creep.pos.findInRange(FIND_DROPPED_RESOURCES, 1, {
 					filter: e => e.resourceType == RESOURCE_ENERGY
 				});
 				if (energy.length > 0) {
