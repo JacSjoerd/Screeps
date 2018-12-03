@@ -20,7 +20,6 @@ module.exports = {
 					let availableClaimers = creep.room.find(FIND_MY_CREEPS, {filter: c => c.role == 'claimer'}).length;
 					if (availableClaimers == 0) {
 						Memory.creeps['claimer'+home+targetRoom] = {name: 'claimer'+home+targetRoom, role: 'claimer', home: home, targetRoom: targetRoom, claim: false}
-						console.log(creep.name, 'called for claimer!');
 					}
 				}
 			}

@@ -65,7 +65,8 @@ module.exports = function() {
 			// Prio 2: Stuctures that can contain energy
 			if (structure === null) {
 				structure = this.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-					filter: (s) => (s.structureType == STRUCTURE_TOWER
+					filter: (s) => ((s.structureType == STRUCTURE_TOWER
+							|| (s.structureType == STRUCTURE_LINK  && this.memory.role != "trucker"))
 							&& s.energy < s.energyCapacity)
 				});
 			}

@@ -426,7 +426,6 @@ module.exports = function() {
 				extensions = this.find(FIND_MY_STRUCTURES, {
 					filter: e => e.structureType == STRUCTURE_EXTENSION
 				});
-				console.log(this.name,'has',extensions.length,'extensions');
 				// start expanding when extensions are build
 				if ( Memory.rooms[roomToColonize].initiated == false && extensions.length >= 30) {
 					// Send claimer, harvester, trucker and builder to new room, spawn them by creating creeps in memory
